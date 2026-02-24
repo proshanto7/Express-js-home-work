@@ -35,13 +35,31 @@ app.post("/todo", async (req, res) => {
 app.get("/alltodos", async (req, res) => {
   const allTodos = await todo.find();
 
-  res
-    .status(200)
-    .send({
-      success: true,
-      message: "all data fatch successful",
-      data: allTodos,
+  res.status(200).send({
+    success: true,
+    message: "all data fatch successful",
+    data: allTodos,
+  });
+});
+
+// task delet API Route
+
+app.delete("/delettodo/:id", async (req, res) => {
+  const id = req.params.id;
+  const deletTodo = await todo.findByIdAndDelete(id);
+  if (!deletTodo) {
+    return res.status(404).json({
+      success: false,
+      message: "Data Not Found",
+      data: deletTodo,
     });
+  } else {
+    return res.status(200).json({
+      success: true,
+      message: "Task deleted successfully",
+      data: deletTodo,
+    });
+  }
 });
 
 // err meddileware
