@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const port = 7000;
+app.use(express.json());
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -21,7 +22,6 @@ app.post("/todo", async (req, res) => {
   const createtask = new todo({
     title: req.body.name,
   });
-
   await createtask.save();
 
   res.status(200).send({
@@ -29,6 +29,19 @@ app.post("/todo", async (req, res) => {
     message: "Task created successfully",
     data: createtask,
   });
+});
+
+// read Data API Route
+app.get("/alltodos", async (req, res) => {
+  const allTodos = await todo.find();
+
+  res
+    .status(200)
+    .send({
+      success: true,
+      message: "all data fatch successful",
+      data: allTodos,
+    });
 });
 
 // err meddileware
