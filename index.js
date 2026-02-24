@@ -62,6 +62,32 @@ app.delete("/delettodo/:id", async (req, res) => {
   }
 });
 
+// update data API Route
+
+app.patch("/updateTask/:id", async (req, res) => {
+  const id = req.params.id;
+  const name = req.body.name;
+  const updateTask = await todo.findByIdAndUpdate(
+    id,
+    { title: name },
+    { new: true },
+  );
+
+  if (!updateTask) {
+    return res.status(404).send({
+      success: false,
+      message: "Data Not Found",
+      data: updateTask,
+    });
+  } else {
+    return res.status(200).send({
+      success: true,
+      message: "task Update successfully",
+      data: updateTask,
+    });
+  }
+});
+
 // err meddileware
 
 app.use((err, req, res, next) => {
