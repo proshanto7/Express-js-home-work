@@ -63,6 +63,25 @@ app.delete("/delettodo/:id", async (req, res) => {
   }
 });
 
+
+// delete all data API Route
+app.delete("/deleteall", async (req, res) => {
+  const deleteAll = await todo.deleteMany({});
+  if (!deleteAll) {
+    return res.status(404).send({
+      success: false,
+      message: "Data Not Found",
+      data: deleteAll,
+    });
+  } else {
+    return res.status(200).send({
+      success: true,
+      message: "All tasks deleted successfully",
+      data: deleteAll,
+    });
+  }
+});
+
 // update data API Route
 
 app.patch("/updateTask/:id", async (req, res) => {
